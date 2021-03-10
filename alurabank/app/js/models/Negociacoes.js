@@ -16,6 +16,7 @@ System.register([], function (exports_1, context_1) {
                     return [].concat(this._negociacoes);
                 }
                 paraTexto() {
+                    console.log(`Impressão`);
                     console.log(JSON.stringify(this._negociacoes));
                 }
             };

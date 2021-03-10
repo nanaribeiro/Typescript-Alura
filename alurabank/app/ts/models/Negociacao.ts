@@ -13,6 +13,7 @@ export class Negociacao
 
     paraTexto(): void
     {
+        console.log(`Impressão`);
         console.log(
             `Data: ${this.data}
             Quantidade: ${this.quantidade}

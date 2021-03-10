@@ -16,6 +16,7 @@ export class Negociacoes
 
     paraTexto(): void
     {
+        console.log(`Impressão`);
         console.log(JSON.stringify(this._negociacoes));
     }
 }

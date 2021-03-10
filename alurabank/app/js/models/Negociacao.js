@@ -15,6 +15,7 @@ System.register([], function (exports_1, context_1) {
                     return this.quantidade * this.valor;
                 }
                 paraTexto() {
+                    console.log(`Impressão`);
                     console.log(`Data: ${this.data}
             Quantidade: ${this.quantidade}
             Valor: ${this.valor}
