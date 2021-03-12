@@ -59,10 +59,17 @@ export class NegociacaoController
     }
 
     @throttle()
-    importarDados()
-    {       
-        //Só irá importar se já não tiverem sido importadas 
-        this._service.obterNegociacoes(res => 
+    async importarDados()
+    {  
+        try
+        {
+            //Só irá importar se já não tiverem sido importadas
+            //Código que trabalha com promise para n precisar do then
+            //para obter os dados é utilizado o async no método
+            //Quando tem await espera a instrução ser executada para continuar
+            //o código de importarDados mas a aplicação continua executando normal
+            const negociacoesParaImportar = await this._service
+            .obterNegociacoes(res => 
             {
                 if(res.ok)
                 {
@@ -72,23 +79,23 @@ export class NegociacaoController
                 {
                     throw new Error(res.statusText);
                 }
-            })
-        .then(negociacoesParaImportar => 
-            {
-                const negociacoesJaImportadas = this._negociacoes.paraArray();
+            });
+
+            const negociacoesJaImportadas = this._negociacoes.paraArray();
+            
+            negociacoesParaImportar
+                .filter(negociacao => 
+                    !negociacoesJaImportadas.some(jaImportada => 
+                        negociacao.ehIgual(jaImportada)))
+                .forEach(negociacao => 
+                    this._negociacoes.adiciona(negociacao));
+
+                this._negociacoesView.update(this._negociacoes);
+        } catch(err)
+        {
+            this._mensagemView.update(err.message);
+        }    
                 
-                negociacoesParaImportar
-                    .filter(negociacao => 
-                        !negociacoesJaImportadas.some(jaImportada => 
-                            negociacao.ehIgual(jaImportada)))
-                    .forEach(negociacao => 
-                        this._negociacoes.adiciona(negociacao))
-                    this._negociacoesView.update(this._negociacoes);
-            })
-            .catch(err => 
-            {
-                this._mensagemView.update(err.message);
-            });            
     }
 }
 
